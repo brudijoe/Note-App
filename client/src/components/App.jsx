@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
+import axios from "axios";
 
 function App() {
-
   const [notes, setNotes] = useState([]);
 
-  // Add note
+  useEffect(() => {
+    axios
+      .get("/api/notes")
+      .then((res) => setNotes(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+  // console.log("Notes-Array: " + JSON.stringify(notes));
+
   function addNote(newNote) {
+    axios
+      .post("/api/note/add", newNote)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setNotes((prevNotes) => {
       return [...prevNotes, newNote];
     });
   }
-  // Delete note
+
   function deleteNote(id) {
+    const deletedNote = notes[id];
+    axios
+      .post("/api/note/delete", deletedNote)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setNotes((prevNotes) => {
       return prevNotes.filter((noteItem, index) => {
         return index !== id;
