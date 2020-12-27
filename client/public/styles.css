@@ -1,0 +1,113 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html {
+    font-family: "Roboto", sans-serif;
+  }
+  body {
+    padding: 0 16px;
+    height: 100%;
+    background-color: #3C3C46;
+    /* 10.11.2020 Test für Backgroundimage */
+    /*background-image: url("../images/cardboard.png");*/
+    /* background-image: url("https://www.transparenttextures.com/patterns/cardboard.png");
+    This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  }
+  
+  header {
+    background-color: #343a40;
+    margin: auto -16px;
+    padding: 16px 32px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  header h1 {
+    color: #fff;
+    text-align: center;
+    font-weight: normal;
+    font-size: 32px;
+    letter-spacing: 0.25;
+  }
+  
+  footer {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    left:0;
+    width: 100%;
+    height: 2.5rem;
+  }
+  
+  footer p {
+    color:#fff;
+  }
+  .note {
+    background-color: #343a40;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    color: #fff;
+    padding: 10px;
+    width: 240px;
+    margin: 16px;
+    float: left;
+  }
+  .note h1 {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+  }
+  .note p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .note button {
+    position: relative;
+    float: right;
+    margin-right: 10px;
+    color: #4f7bff;
+    background-color: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  form.create-note {
+    position: relative;
+    width: 480px;
+    margin: 30px auto 20px auto;
+    background-color: #343a40;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  form.create-note input,
+  form.create-note textarea {
+    width: 100%;
+    color:#fff;
+    border: none;
+    padding: 4px;
+    outline: none;
+    background-color: #343a40;
+    font-size: 1.2em;
+    font-family: inherit;
+    resize: none;
+  }
+  form.create-note button {
+    position: absolute;
+    right: 18px;
+    bottom: -18px;
+    background: #4f7bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    outline: none;
+  }
+  
