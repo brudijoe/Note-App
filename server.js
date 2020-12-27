@@ -41,8 +41,7 @@ const noteSchema = new mongoose.Schema(
       required: [true, "Bitte Namen eingeben"],
       minlength: 3,
       maxlength: 50,
-      trim: true,
-      unique: true
+      trim: true
     },
     content: {
       type: String,
