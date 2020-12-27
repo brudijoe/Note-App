@@ -3,10 +3,11 @@ const express  = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const assert = require("assert"); 
 
 const app = express();
 
-// Change server to 9000 for Heroku
+// Change port for Heroku
 const PORT = process.env.PORT || 9000;
  
 // Middleware
@@ -16,6 +17,7 @@ app.use(cors());
 
 // Establish DB connection
 // Level 2
+// TODO create own file for DB
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER;
 const DB_KEY = process.env.DB_KEY;
@@ -29,30 +31,31 @@ mongoose.connect(mongoAtlas || mongoLocal, {
   useFindAndModify: false,
   connectTimeoutMS: 10000
 });
-
+ 
 // Create note schema
 const noteSchema = new mongoose.Schema(
-    {
-      title: {
-        type: String,
-        required: [true, "Bitte Namen eingeben"],
-        minlength: 3,
-        maxlength: 50,
-        trim: true,
-        unique: true
-      },
-      content: {
-        type: String,
-        required: [true, "Bitte Inhalt eingeben"],
-        minlength: 5,
-        maxlength: 255,
-        trim: true
-      }
+  {
+    //TODO Send minlength/maxlength error to frontend
+    title: {
+      type: String,
+      required: [true, "Bitte Namen eingeben"],
+      minlength: 3,
+      maxlength: 50,
+      trim: true,
+      unique: true
     },
-    { collection: "notes" }
-  );
-
-// Create single model
+    content: {
+      type: String,
+      required: [true, "Bitte Inhalt eingeben"],
+      minlength: 5,
+      maxlength: 255,
+      trim: true
+    }
+  },
+  { collection: "notes" }
+);
+  
+ // Create single model
 const Note = mongoose.model("Note", noteSchema);
  
 // Route to get all notes
@@ -65,21 +68,50 @@ app.get("/api/notes", (req, res) => {
         }
       });
 })
+ 
+// Route to add a note
+app.post("/api/note/add", (req, res) => {
+
+   const newNote = new Note(req.body);
+   console.log("Neue Notiz(server.js): " + newNote);
+   
+   newNote.save((err) => {
+      if (err) {
+          //TODO improve error messages
+        assert.strictEqual(err.errors['title'].message,
+    'Path `name` is required.');
+        res.status(400).json({"error": err});
+      } else {
+        res.status(200).json("Note saved successfully.");
+      }
+   });
+});
 
 //Route to delete a note
 app.post("/api/note/delete", (req, res) => {
-    const newNote = new Note(req.body);
-    //console.log("Gelöschte Notiz(server.js): " + newNote);
-  
-      Note.deleteOne({ _id: newNote.id }, function (err) {
-        if (err) {
-          res.status(400).json({"error": err});
-        } else {
-          res.status(200).json("Successfully deleted note.");
-        }
-      });
-  });
+  const newNote = new Note(req.body);
+  console.log("Gelöschte Notiz(server.js): " + newNote);
 
+    Note.deleteOne({ _id: newNote.id }, function (err) {
+      if (err) {
+        res.status(400).json({"error": err});
+      } else {
+        res.status(200).json("Successfully deleted note.");
+      }
+    });
+});
+
+// production/heroku
+// Before app.listen, send index.html to client
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+ 
 app.listen(PORT, function() {
-    console.log("Server started on port: " + PORT);
+  console.log("Server started on port: " + PORT);
 });
