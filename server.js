@@ -3,7 +3,6 @@ const express  = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-const assert = require("assert"); 
 
 const app = express();
 
@@ -76,9 +75,6 @@ app.post("/api/note/add", (req, res) => {
    
    newNote.save((err) => {
       if (err) {
-          //TODO improve error messages
-        assert.strictEqual(err.errors['title'].message,
-    'Path `name` is required.');
         res.status(400).json({"error": err});
       } else {
         res.status(200).json("Note saved successfully.");
